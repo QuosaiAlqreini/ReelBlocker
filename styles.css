@@ -1,0 +1,27 @@
+/* Hide Reels tab in bottom navigation bar and sidebar */
+a[href*="/reels/"],
+a[href*="/reel/"],
+div[role="navigation"] a[href*="/reels/"],
+div[role="tablist"] a[href*="/reels/"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide Reels sections and recommendation trays in Home feed */
+article:has(a[href*="/reel/"]),
+article:has(a[href*="/reels/"]),
+div:has(> a[href*="/reels/"]) {
+    display: none !important;
+}
+
+/* Hide Reels in search / explore */
+a[href*="/reel/"] {
+    display: none !important;
+}
+
+/* Ensure Direct Messages navigation icon stays prominently visible */
+a[href*="/direct/inbox/"] {
+    display: flex !important;
+}

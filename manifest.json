@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "ReelBlocker for Instagram",
+  "version": "1.0.0",
+  "description": "Blocks Instagram Reels and distraction feeds while keeping Direct Messages (DMs) fully accessible.",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.instagram.com/*"],
+      "css": ["styles.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
