@@ -1,57 +1,44 @@
 # 🛡️ ReelBlocker
 
-> **Block Instagram Reels, stay focused, and keep your Direct Messages (DMs) 100% accessible.**
+> **Block Instagram Reels, eliminate distractions, and keep your Direct Messages (DMs) 100% accessible on your phone.**
 
+[![Install Web App](https://img.shields.io/badge/Install_App-Live_PWA-brightgreen.svg?logo=googlechrome)](https://quosaialqreini.github.io/ReelBlocker/)
+[![Download Android APK](https://img.shields.io/badge/Download-Android_APK-blue.svg?logo=android)](https://github.com/QuosaiAlqreini/ReelBlocker/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Platform: Web / Mobile](https://img.shields.io/badge/Platform-Chrome%20%7C%20Safari%20%7C%20Firefox%20%7C%20Mobile-blue)](https://github.com/QuosaiAlqreini/ReelBlocker)
 
-ReelBlocker removes the addictive Reels algorithm, bottom navigation tab, and explore video feeds from Instagram while ensuring your **Direct Messages (DMs)**, message notifications, and chat features remain completely available.
-
----
-
-## ✨ Features
-
-- 🚫 **Hides Reels Navigation Tab:** Completely eliminates the Reels icon from the bottom navigation bar and sidebar.
-- 🔀 **Instant Redirection:** Visiting any `/reels/*` or `/reel/*` link instantly redirects you directly to your Messages inbox (`/direct/inbox/`).
-- 🧹 **Feed Cleaner:** Suppresses Reels trays and recommendation algorithms from your home feed and explore page.
-- 💬 **Full DM Support:** Retains unrestricted access to all your messages, chat threads, media sharing, and notifications.
-- 📱 **Cross-Platform:** Works on **iOS (iPhone)**, **Android**, and **Desktop** (Chrome, Edge, Brave, Firefox, Safari).
+ReelBlocker eliminates the addictive Reels algorithm, bottom navigation tab, and explore video feeds from Instagram while keeping your **Direct Messages (DMs)**, message notifications, and chat features fully available.
 
 ---
 
-## 📱 Mobile Setup Guide
+## 📲 How to Install ReelBlocker on Your Phone
 
-### 🍎 iPhone (iOS)
+### ⚡ Method 1: Instant App Installation (iPhone & Android) — Recommended
+You can install ReelBlocker directly onto your phone screen without any third-party app stores:
 
-#### Option 1: Direct Messages Home Screen App (Fastest, zero install)
-1. Open **Safari** on your iPhone and visit: **[`https://www.instagram.com/direct/inbox/`](https://www.instagram.com/direct/inbox/)**
-2. Log in to your account.
-3. Tap the **Share** button (the square with an arrow pointing up at the bottom).
-4. Tap **"Add to Home Screen"**.
-5. Name it **"Instagram"** and tap **Add**.
-6. **Result:** An icon appears on your home screen that opens in standalone fullscreen mode straight to your Messages inbox without any Reels tab.
-
-#### Option 2: Safari Userscript Extension
-1. Install **[Userscripts](https://apps.apple.com/app/userscripts/id1463298887)** (Free & Open Source) from the App Store.
-2. Go to iPhone **Settings** → **Safari** → **Extensions** and enable **Userscripts**.
-3. Open Safari, tap the extensions icon, and create a new script.
-4. Paste the code from [`instagram-block-reels.user.js`](./instagram-block-reels.user.js).
-5. **Result:** Reels are completely stripped from Instagram in Safari.
+1. Open this link on your phone: **[https://quosaialqreini.github.io/ReelBlocker/](https://quosaialqreini.github.io/ReelBlocker/)**
+2. Follow the 1-tap prompt for your phone:
+   - **🤖 On Android (Chrome / Brave / Samsung Internet):** Tap the **"Install App on Phone"** button that pops up.
+   - **🍎 On iPhone (Safari):** Tap the **Share** button (box with an arrow pointing up at the bottom) ➔ tap **"Add to Home Screen"** ➔ tap **Add**.
+3. **Done!** ReelBlocker will appear on your phone's home screen as a standalone app that launches directly into your distraction-free Instagram Direct Messages.
 
 ---
 
-### 🤖 Android
+### 🤖 Method 2: Android Native APK (`ReelBlocker.apk`)
+If you want an installed native Android app:
 
-#### Option 1: Instander / MyInsta (Native Android App)
-1. Install **Instander** or **MyInsta** (popular Instagram clients for Android).
-2. Go to **Profile** → hamburger menu (top right) → **Instander Settings** (or **MyInsta Settings**).
-3. Select **Feed & Stories** and toggle on **"Hide Reels"** / **"Disable Reels button"**.
-4. **Result:** The Reels button disappears from the bottom navigation bar completely.
+1. Go to the **[ReelBlocker GitHub Releases Page](https://github.com/QuosaiAlqreini/ReelBlocker/releases)** on your Android phone.
+2. Under **Assets**, tap **`ReelBlocker.apk`** to download.
+3. Open the downloaded `.apk` file and tap **Install** *(if prompted, allow "Install unknown apps" for your browser)*.
+4. Launch **ReelBlocker** from your app drawer!
 
-#### Option 2: Kiwi Browser / Firefox Android + Extension / Userscript
-1. Install **Kiwi Browser** or **Firefox** from the Google Play Store (both support extensions).
-2. Install the **Tampermonkey** extension and load [`instagram-block-reels.user.js`](./instagram-block-reels.user.js), or load this folder as an unpacked extension.
-3. Open `instagram.com`, tap the three dots in your browser, and tap **"Add to Home screen"** / **"Install App"**.
+---
+
+### 🧩 Method 3: Mobile Browser Extension / Userscript
+If you prefer using your existing mobile browser (Safari with Userscripts, Kiwi Browser, Orion, or Firefox Mobile):
+
+1. Install **Tampermonkey** or the **Userscripts** app.
+2. Load the script: **[`instagram-block-reels.user.js`](./instagram-block-reels.user.js)**.
+3. All Instagram pages will have Reels stripped while keeping `/direct/inbox/` active.
 
 ---
 
@@ -65,10 +52,18 @@ ReelBlocker removes the addictive Reels algorithm, bottom navigation tab, and ex
 3. Toggle on **Developer mode** (top right).
 4. Click **Load unpacked** and select this repository folder.
 
-### Option B: Install via Tampermonkey / Violentmonkey
-1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension.
-2. Click on the extension icon and select **Create a new script**.
-3. Paste the contents of [`instagram-block-reels.user.js`](./instagram-block-reels.user.js) and save.
+### Option B: Tampermonkey
+Install [Tampermonkey](https://www.tampermonkey.net/) and add [`instagram-block-reels.user.js`](./instagram-block-reels.user.js).
+
+---
+
+## ✨ What ReelBlocker Does
+
+- 🚫 **Hides Reels Navigation Tab:** Strips the Reels icon completely from the navigation bar.
+- 🔀 **Instant Redirect:** Any `/reels/*` or `/reel/*` link redirects straight to your Messages inbox (`/direct/inbox/`).
+- 🧹 **Clean Feed:** Removes reels recommendation trays and video feeds from Home and Explore.
+- 💬 **Full DM Support:** Retains full access to chats, messaging, photo sharing, and notifications.
+- 🔋 **Zero Battery Drain:** Lightweight, fast, and privacy-respecting.
 
 ---
 
@@ -76,14 +71,20 @@ ReelBlocker removes the addictive Reels algorithm, bottom navigation tab, and ex
 
 ```text
 ReelBlocker/
-├── manifest.json                  # Manifest V3 extension configuration
-├── content.js                     # URL redirection and DOM observer script
-├── styles.css                     # CSS rules to hide Reels elements instantly
+├── index.html                     # Mobile PWA installation portal
+├── manifest.webmanifest           # Progressive Web App manifest
+├── sw.js                          # Service Worker for offline & standalone install
+├── manifest.json                  # Manifest V3 browser extension
+├── content.js                     # URL interception & redirect logic
+├── styles.css                     # CSS rules to hide Reels elements
 ├── instagram-block-reels.user.js  # Universal Userscript (Mobile & Desktop)
-├── icon16.png                     # Extension icon (16x16)
-├── icon48.png                     # Extension icon (48x48)
-├── icon128.png                    # Extension icon (128x128)
-├── icon.png                       # Extension icon
+├── android/                       # Native Android WebView app project
+│   └── app/src/main/
+│       ├── AndroidManifest.xml
+│       └── java/com/reelblocker/app/MainActivity.java
+├── .github/workflows/
+│   └── build-apk.yml              # Automated cloud builder for ReelBlocker.apk
+├── icon16.png / icon48.png / icon128.png / icon192.png / icon512.png
 └── README.md                      # Documentation
 ```
 

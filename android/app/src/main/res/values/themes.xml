@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.ReelBlocker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#0a0a0c</item>
+        <item name="android:navigationBarColor">#0a0a0c</item>
+        <item name="android:windowBackground">#0a0a0c</item>
+    </style>
+</resources>
