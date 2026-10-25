@@ -1,6 +1,7 @@
 package com.reelblocker.app;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,79 +14,98 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
+    private SwipeRefreshLayout swipeRefresh;
+    private ProgressBar progressBar;
     private ValueCallback<Uri[]> filePathCallback;
     private static final int FILE_CHOOSER_RESULT_CODE = 1001;
-
-    private static final String DM_URL = "https://www.instagram.com/direct/inbox/";
-
-    private static final String ANTI_REELS_CSS =
-            "a[href*=\\\"/reels/\\\"], a[href*=\\\"/reel/\\\"]," +
-            "div[role=\\\"navigation\\\"] a[href*=\\\"/reels/\\\"]," +
-            "div[role=\\\"tablist\\\"] a[href*=\\\"/reels/\\\"]," +
-            "article:has(a[href*=\\\"/reel/\\\"])," +
-            "article:has(a[href*=\\\"/reels/\\\"]) {" +
-            "   display: none !important;" +
-            "   visibility: hidden !important;" +
-            "   pointer-events: none !important;" +
-            "}";
-
-    private static final String INJECT_SCRIPT =
-            "(function() {" +
-            "   var style = document.getElementById('anti-reels-style');" +
-            "   if (!style) {" +
-            "       style = document.createElement('style');" +
-            "       style.id = 'anti-reels-style';" +
-            "       style.innerHTML = '" + ANTI_REELS_CSS + "';" +
-            "       document.head.appendChild(style);" +
-            "   }" +
-            "   function check() {" +
-            "       if (location.pathname.startsWith('/reels/') || location.pathname.startsWith('/reel/')) {" +
-            "           location.replace('" + DM_URL + "');" +
-            "       }" +
-            "   }" +
-            "   check();" +
-            "   window.addEventListener('popstate', check);" +
-            "})();";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        setContentView(R.layout.activity_main);
 
-        webView = new WebView(this);
-        setContentView(webView);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        progressBar = findViewById(R.id.progress_bar);
+        webView = findViewById(R.id.web_view);
 
-        // Configure Cookies
+        setupCookies();
+        setupWebSettings();
+        setupWebViewClients();
+        setupBackNavigation();
+        setupSwipeRefresh();
+
+        if (savedInstanceState != null) {
+            webView.restoreState(savedInstanceState);
+        } else {
+            webView.loadUrl(ReelsBlockerLogic.DM_URL);
+        }
+    }
+
+    private void setupCookies() {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.setAcceptThirdPartyCookies(webView, true);
+    }
 
-        // Configure WebSettings
+    @SuppressLint("SetJavaScriptEnabled")
+    private void setupWebSettings() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
         settings.setLoadsImagesAutomatically(true);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
-        // Set modern mobile User-Agent
+        // Ensure proper scaling and viewport fitting across all phone and tablet sizes
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setSupportZoom(false);
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        // Modern mobile User-Agent (stripping '; wv' prevents Instagram from displaying WebView restrictions)
         String defaultUa = settings.getUserAgentString();
-        settings.setUserAgentString(defaultUa.replace("; wv", ""));
+        if (defaultUa != null) {
+            settings.setUserAgentString(defaultUa.replace("; wv", ""));
+        }
+    }
 
+    private void setupWebViewClients() {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.contains("/reels/") || url.contains("/reel/")) {
-                    view.loadUrl(DM_URL);
+                if (ReelsBlockerLogic.isReelUrl(url)) {
+                    view.loadUrl(ReelsBlockerLogic.DM_URL);
                     return true;
+                }
+                // Handle external links or custom app schemes (tel, mailto, whatsapp, etc.)
+                if (!ReelsBlockerLogic.isInstagramUrl(url)) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                        return true;
+                    } catch (Exception ignored) {
+                        return false;
+                    }
                 }
                 return false;
             }
@@ -93,21 +113,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                if (url.contains("/reels/") || url.contains("/reel/")) {
-                    view.loadUrl(DM_URL);
+                if (ReelsBlockerLogic.isReelUrl(url)) {
+                    view.loadUrl(ReelsBlockerLogic.DM_URL);
                 } else {
-                    view.evaluateJavascript(INJECT_SCRIPT, null);
+                    view.evaluateJavascript(ReelsBlockerLogic.INJECT_SCRIPT, null);
                 }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                view.evaluateJavascript(INJECT_SCRIPT, null);
+                view.evaluateJavascript(ReelsBlockerLogic.INJECT_SCRIPT, null);
+                CookieManager.getInstance().flush();
+                if (swipeRefresh != null) {
+                    swipeRefresh.setRefreshing(false);
+                }
             }
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress < 100) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setProgress(newProgress);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 if (MainActivity.this.filePathCallback != null) {
@@ -115,9 +149,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 MainActivity.this.filePathCallback = filePathCallback;
 
-                Intent intent = fileChooserParams.createIntent();
                 try {
+                    Intent intent = fileChooserParams.createIntent();
                     startActivityForResult(intent, FILE_CHOOSER_RESULT_CODE);
+                } catch (ActivityNotFoundException e) {
+                    Intent fallback = new Intent(Intent.ACTION_GET_CONTENT);
+                    fallback.addCategory(Intent.CATEGORY_OPENABLE);
+                    fallback.setType("*/*");
+                    startActivityForResult(Intent.createChooser(fallback, "Select File"), FILE_CHOOSER_RESULT_CODE);
                 } catch (Exception e) {
                     MainActivity.this.filePathCallback = null;
                     return false;
@@ -126,7 +165,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webView.loadUrl(DM_URL);
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "Unable to start download", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupBackNavigation() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (webView != null && webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
+    }
+
+    private void setupSwipeRefresh() {
+        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_red_light);
+        swipeRefresh.setProgressBackgroundColorSchemeColor(0xFF16181E);
+        swipeRefresh.setOnRefreshListener(() -> {
+            if (webView != null) {
+                webView.reload();
+            } else {
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+        // Avoid conflict with inner webview scrolling
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView.getScrollY() > 0);
     }
 
     @Override
@@ -143,11 +218,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (webView != null) {
+            webView.saveState(outState);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CookieManager.getInstance().flush();
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (webView != null) {
+            webView.destroy();
+        }
+        super.onDestroy();
     }
 }

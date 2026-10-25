@@ -3,7 +3,7 @@
 > **Block Instagram Reels, eliminate distractions, and keep your Direct Messages (DMs) 100% accessible on your phone.**
 
 [![Install Web App](https://img.shields.io/badge/Install_App-Live_PWA-brightgreen.svg?logo=googlechrome)](https://quosaialqreini.github.io/ReelBlocker/)
-[![Download Android APK](https://img.shields.io/badge/Download-Android_APK-blue.svg?logo=android)](https://github.com/QuosaiAlqreini/ReelBlocker/releases)
+[![Download Android APK](https://img.shields.io/badge/Download-Android_APK-blue.svg?logo=android)](https://github.com/QuosaiAlqreini/ReelBlocker/releases/latest/download/ReelBlocker.apk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ReelBlocker eliminates the addictive Reels algorithm, bottom navigation tab, and explore video feeds from Instagram while keeping your **Direct Messages (DMs)**, message notifications, and chat features fully available.
@@ -26,10 +26,9 @@ You can install ReelBlocker directly onto your phone screen without any third-pa
 ### 🤖 Method 2: Android Native APK (`ReelBlocker.apk`)
 If you want an installed native Android app:
 
-1. Go to the **[ReelBlocker GitHub Releases Page](https://github.com/QuosaiAlqreini/ReelBlocker/releases)** on your Android phone.
-2. Under **Assets**, tap **`ReelBlocker.apk`** to download.
-3. Open the downloaded `.apk` file and tap **Install** *(if prompted, allow "Install unknown apps" for your browser)*.
-4. Launch **ReelBlocker** from your app drawer!
+1. **[Direct Download `ReelBlocker.apk`](https://github.com/QuosaiAlqreini/ReelBlocker/releases/latest/download/ReelBlocker.apk)** (or check the [Releases Page](https://github.com/QuosaiAlqreini/ReelBlocker/releases)).
+2. Open the downloaded `.apk` file on your phone and tap **Install** *(if prompted, allow "Install unknown apps" for your browser/file manager)*.
+3. Launch **ReelBlocker** from your app drawer! Works on all modern Android devices, tablets, and foldables (Android 7.0+ up to Android 15).
 
 ---
 

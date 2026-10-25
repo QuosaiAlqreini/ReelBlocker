@@ -1,27 +1,44 @@
-/* Hide Reels tab in bottom navigation bar and sidebar */
-a[href*="/reels/"],
-a[href*="/reel/"],
-div[role="navigation"] a[href*="/reels/"],
-div[role="tablist"] a[href*="/reels/"] {
+/* Hide Reels tab in bottom navigation bar, sidebar and top navigation */
+a[href*="/reels"],
+a[href*="/reel"],
+div[role="navigation"] a[href*="/reels"],
+div[role="navigation"] a[href*="/reel"],
+div[role="tablist"] a[href*="/reels"],
+div[role="tablist"] a[href*="/reel"],
+div[role="tablist"] div:has(svg[aria-label*="Reel" i]),
+div[role="tablist"] div:has(svg[aria-label*="reel" i]),
+div[role="navigation"] div:has(svg[aria-label*="Reel" i]),
+a:has(svg[aria-label*="Reel" i]),
+a:has(svg[aria-label*="reel" i]),
+div[role="tab"]:has(svg[aria-label*="Reel" i]),
+div[role="tab"]:has(svg[aria-label*="reel" i]) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
 }
 
-/* Hide Reels sections and recommendation trays in Home feed */
-article:has(a[href*="/reel/"]),
-article:has(a[href*="/reels/"]),
-div:has(> a[href*="/reels/"]) {
+/* Hide Reels sections, shelves, and recommendation trays in Home feed */
+article:has(a[href*="/reel"]),
+article:has(a[href*="/reels"]),
+article:has(svg[aria-label*="Reel" i]),
+article:has(svg[aria-label*="reel" i]),
+div:has(> a[href*="/reels"]) {
     display: none !important;
+    visibility: hidden !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
 }
 
 /* Hide Reels in search / explore */
-a[href*="/reel/"] {
+a[href*="/reel/"],
+a[href*="/reel"] {
     display: none !important;
 }
 
 /* Ensure Direct Messages navigation icon stays prominently visible */
-a[href*="/direct/inbox/"] {
+a[href*="/direct/inbox"] {
     display: flex !important;
 }
